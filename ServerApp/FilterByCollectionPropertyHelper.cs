@@ -1,0 +1,93 @@
+using System.Linq.Expressions;
+using System.Reflection;
+
+#nullable disable
+
+namespace ServerApp
+{
+  public static class FilterByCollectionPropertyHelper
+  {
+    public class FilterInfo
+    {
+      public Type CollectionItemType { get; set; }
+      public Type CollectionType { get; internal set; }
+      public string CollectionPropertyName { get; set; }
+      public string CollectionItemPropertyName { get; set; }
+    }
+
+    static Dictionary<string, FilterInfo> filterInfos = new Dictionary<string, FilterInfo>();
+
+    static MethodInfo GetFilteringPredicate(string filterOperation) {
+      // selects a method overload that accepts a string as a parameter
+      Func<string, MethodInfo> infoByName = (name) =>
+        typeof(string).GetMethod(name, new Type[] { typeof(string) });
+
+      switch (filterOperation) {
+        case "contains": return infoByName("Contains");
+        case "=": return infoByName("Equals");
+        case "startswith": return infoByName("StartsWith");
+        case "endswith": return infoByName("EndsWith");
+        default: throw new ArgumentException("This operation is not supported: " + filterOperation);
+      }
+    }
+
+    static FilterByCollectionPropertyHelper() {
+      DevExtreme.AspNet.Data.Helpers.CustomFilterCompilers.RegisterBinaryExpressionCompiler(compilerFunc => {
+        var key = $"{compilerFunc.DataItemExpression.Type.FullName}|{compilerFunc.AccessorText}";
+        if (!filterInfos.TryGetValue(key, out var info)) return null;
+
+        var collectionItemParameter = Expression.Parameter(info.CollectionItemType);
+        Expression collectionItem = collectionItemParameter;
+        if (!string.IsNullOrEmpty(info.CollectionItemPropertyName)) {
+          collectionItem = Expression.Property(collectionItemParameter, info.CollectionItemPropertyName);
+        }
+        // represents (collectionItem) => collectionItem.PropertyName.FilteringMethod("searchText")
+        var innerLambda = Expression.Lambda(
+            Expression.Call(
+              collectionItem,
+              GetFilteringPredicate(compilerFunc.Operation),
+              Expression.Constant(compilerFunc.Value, typeof(string))
+            ),
+            collectionItemParameter);
+
+        // represents call to Enumerable.Any(collection, innerLambda)
+        return Expression.Call(
+            typeof(Enumerable),
+            "Any",
+            new[] { info.CollectionItemType },
+            Expression.Property(compilerFunc.DataItemExpression, info.CollectionPropertyName),
+            innerLambda
+        );
+      });
+    }
+
+    public static void RegisterFor<TDataItem, TCollectionItem>(
+      Expression<Func<TDataItem, IEnumerable<TCollectionItem>>> collectionPropertyAccessor,
+      Expression<Func<TCollectionItem, string>> collectionItemPropertyAccessor = null
+    ) {
+      var collectionPropertyName = ((MemberExpression)collectionPropertyAccessor.Body).Member.Name;
+      var collectionItemPropertyName = collectionItemPropertyAccessor != null ?
+          ((MemberExpression)collectionItemPropertyAccessor.Body).Member.Name
+          : null;
+
+      var key = $"{typeof(TDataItem).FullName}|{collectionPropertyName}";
+
+      if (!filterInfos.ContainsKey(key)) {
+        filterInfos.Add(key, new FilterInfo() {
+          CollectionType = typeof(TDataItem),
+          CollectionItemType = typeof(TCollectionItem),
+          CollectionPropertyName = collectionPropertyName,
+          CollectionItemPropertyName = collectionItemPropertyName
+        });
+      }
+    }
+  }
+
+  public static class FilterByCollectionPropertyExtensions
+  {
+    public static IQueryable<TDataItem> RegisterFilterFor<TDataItem, TCollectionItem>(this IQueryable<TDataItem> collection, Expression<Func<TDataItem, IEnumerable<TCollectionItem>>> collectionPropertyAccessor, Expression<Func<TCollectionItem, string>> collectionItemPropertyAccessor = null) {
+      FilterByCollectionPropertyHelper.RegisterFor(collectionPropertyAccessor, collectionItemPropertyAccessor);
+      return collection;
+    }
+  }
+}
