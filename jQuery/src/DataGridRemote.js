@@ -1,6 +1,6 @@
 $(() => {
-  //const url = "https://localhost:7189/api/InMemoryData/";
-  const url = "https://localhost:7189/api/DbData/";
+  const url = "https://localhost:5006/api/InMemoryData/";
+  //const url = "https://localhost:5006/api/DbData/";
 
   $('#data-grid-remote').dxDataGrid({
     dataSource: {
