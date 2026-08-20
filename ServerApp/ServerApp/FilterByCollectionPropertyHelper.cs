@@ -1,8 +1,11 @@
 using DevExtreme.AspNet.Data.Helpers;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 #nullable disable
+
+[assembly: InternalsVisibleTo("ServerApp.Tests")]
 
 namespace ServerApp
 {
@@ -95,6 +98,11 @@ namespace ServerApp
           CollectionItemPropertyName = collectionItemPropertyName
         });
       }
+    }
+
+    // Test-only hook: clears registered filter info so tests can start from a clean, predictable state.
+    internal static void ResetForTests() {
+      filterInfos.Clear();
     }
   }
 
