@@ -7,20 +7,11 @@ $(() => {
       store: DevExpress.data.AspNet.createStore({
         key: "CategoryId",
         loadUrl: url + "GetCategories"
-      }),
-      langParams: {
-        collatorOptions: {
-          sensitivity: "case" // required only for api/InMemoryData
-        }
-      }
+      })
     },
     columns: [{
       dataField: "CategoryName",
       width: 200,
-      allowFiltering: false
-    }, {
-      dataField: "Description",
-      width: 400,
       allowFiltering: false
     }, {
       dataField: "Products",

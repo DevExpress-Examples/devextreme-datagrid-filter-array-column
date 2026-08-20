@@ -6,7 +6,6 @@ $(() => {
     dataSource: categories,
     columns: [
       { dataField: "CategoryName", width: 200, allowFiltering: false },
-      { dataField: "Description", width: 400, allowFiltering: false },
       {
         dataField: 'Products',
         caption: "Object Products",
@@ -71,6 +70,7 @@ $(() => {
             if (op === "contains") return normalizedArg1.includes(normalizedArg2);
             if (op === "startswith") return normalizedArg1.startsWith(normalizedArg2);
             if (op === "endswith") return normalizedArg1.endsWith(normalizedArg2);
+            return false;
           };
           const values = extractDisplayValues
             ? column.calculateDisplayValue(data).toLowerCase().split(", ")

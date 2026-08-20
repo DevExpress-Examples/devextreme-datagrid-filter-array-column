@@ -1,3 +1,4 @@
+using DevExtreme.AspNet.Data.Helpers;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -43,12 +44,9 @@ namespace ServerApp
         }
         // represents (collectionItem) => collectionItem.PropertyName.FilteringMethod("searchText")
         var innerLambda = Expression.Lambda(
-            Expression.Call(
-              collectionItem,
-              GetFilteringPredicate(compilerFunc.Operation),
-              Expression.Constant(compilerFunc.Value, typeof(string))
-            ),
-            collectionItemParameter);
+          GetStringCollectionItemExpression(collectionItem, compilerFunc),
+          collectionItemParameter
+         );
 
         // represents call to Enumerable.Any(collection, innerLambda)
         return Expression.Call(
@@ -59,6 +57,23 @@ namespace ServerApp
             innerLambda
         );
       });
+    }
+
+    static Expression GetStringCollectionItemExpression(Expression collectionItem, IBinaryExpressionInfo compilerFunc) {
+      var lowerCollectionItem = Expression.Call(
+        collectionItem,
+        typeof(string).GetMethod("ToLower", Type.EmptyTypes)
+      );
+
+      var lowerSearchValue = Expression.Constant(
+          compilerFunc.Value?.ToString().ToLower() ?? "",
+          typeof(string));
+
+      return Expression.Call(
+              lowerCollectionItem,
+              GetFilteringPredicate(compilerFunc.Operation),
+              lowerSearchValue
+            );
     }
 
     public static void RegisterFor<TDataItem, TCollectionItem>(
