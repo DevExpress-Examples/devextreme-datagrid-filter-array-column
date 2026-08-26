@@ -1,16 +1,16 @@
-import { useCallback, useState } from 'react';
 import './App.css';
 import 'devextreme/dist/css/dx.material.blue.light.compact.css';
-import Button from 'devextreme-react/button';
+import { TabPanel, Item } from 'devextreme-react/tab-panel';
+import DataGridLocal from './components/data-grid-local';
+import DataGridRemote from './components/data-grid-remote';
 
 function App(): JSX.Element {
-  var [count, setCount] = useState<number>(0);
-  const clickHandler = useCallback(() => {
-    setCount((prev) => prev + 1);
-  }, [setCount]);
   return (
     <div className="main">
-      <Button text={`Click count: ${count}`} onClick={clickHandler} />
+      <TabPanel deferRendering={false}>
+        <Item title="Local Data" component={DataGridLocal} />
+        <Item title="Remote Data" component={DataGridRemote} />
+      </TabPanel>
     </div>
   );
 }

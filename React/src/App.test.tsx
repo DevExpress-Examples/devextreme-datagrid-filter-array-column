@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import App from './App.tsx';
 
-test('renders learn react link', () => {
+test('renders local and remote data tabs', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText('Local Data')).toBeInTheDocument();
+  expect(screen.getByText('Remote Data')).toBeInTheDocument();
 });

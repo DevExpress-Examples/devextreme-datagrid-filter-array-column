@@ -23,7 +23,9 @@ var app = builder.Build();
 
 app.UseCors("AllowClient");
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment()) {
+  app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 
