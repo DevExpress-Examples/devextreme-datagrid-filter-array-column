@@ -1,22 +1,13 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { DxButtonModule, DxButtonTypes } from 'devextreme-angular/ui/button';
+import { DxTabPanelModule } from 'devextreme-angular/ui/tab-panel';
+import { DataGridLocalComponent } from './components/data-grid-local/data-grid-local.component';
+import { DataGridRemoteComponent } from './components/data-grid-remote/data-grid-remote.component';
 
 @Component({
-    selector: 'app-root',
-    imports: [DxButtonModule],
-    templateUrl: './app.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrls: ['./app.component.scss'],
+  selector: 'app-root',
+  imports: [DxTabPanelModule, DataGridLocalComponent, DataGridRemoteComponent],
+  templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'Angular';
-
-  counter = 0;
-
-  buttonText = 'Click count: 0';
-
-  onClick(_e: DxButtonTypes.ClickEvent): void {
-    this.counter++;
-    this.buttonText = `Click count: ${this.counter}`;
-  }
-}
+export class AppComponent {}
