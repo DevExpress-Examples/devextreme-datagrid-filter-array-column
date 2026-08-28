@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { DxDataGridModule, type DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { categories, products, simpleProducts, Category } from '../../data';
-import { DataSourceOptions } from 'devextreme/data/data_source';
+import { DataSourceOptions } from 'devextreme-angular/common/data';
 
 @Component({
   selector: 'app-data-grid-local',
