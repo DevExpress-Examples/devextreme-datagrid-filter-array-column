@@ -1,5 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { DxDataGridModule, DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { Component } from '@angular/core';
+import { DxDataGridModule } from 'devextreme-angular/ui/data-grid';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 
 interface RemoteProduct {
