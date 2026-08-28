@@ -1,0 +1,25 @@
+<dx-data-grid
+  id="data-grid-remote"
+  [showBorders]="true"
+  [dataSource]="dataSource"
+  [remoteOperations]="true"
+>
+  <dxo-data-grid-paging [pageSize]="10"></dxo-data-grid-paging>
+  <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+  <dxo-data-grid-header-filter [visible]="true"></dxo-data-grid-header-filter>
+  <dxi-data-grid-column
+    dataField="CategoryName"
+    [width]="200"
+    [allowFiltering]="false"
+  ></dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="Products"
+    [filterOperations]="filterOperations"
+    [calculateCellValue]="calculateProductNames"
+    [allowSorting]="false"
+  >
+    <dxo-data-grid-header-filter
+      [dataSource]="headerFilterDataSource"
+    ></dxo-data-grid-header-filter>
+  </dxi-data-grid-column>
+</dx-data-grid>

@@ -1,0 +1,36 @@
+<dx-data-grid
+  id="data-grid-local"
+  [showBorders]="true"
+  [dataSource]="categories"
+>
+  <dxo-data-grid-filter-row [visible]="true"></dxo-data-grid-filter-row>
+  <dxo-data-grid-header-filter [visible]="true"></dxo-data-grid-header-filter>
+  <dxi-data-grid-column
+    dataField="CategoryName"
+    [width]="200"
+    [allowFiltering]="false"
+  ></dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="Products"
+    caption="Object Products"
+    dataType="string"
+    [filterOperations]="filterOperations"
+    [calculateFilterExpression]="calculateProductsFilterExpression"
+    [calculateDisplayValue]="calculateProductNames"
+  >
+    <dxo-data-grid-header-filter
+      [dataSource]="headerFilterProductsDataSource"
+    ></dxo-data-grid-header-filter>
+  </dxi-data-grid-column>
+  <dxi-data-grid-column
+    dataField="SimpleProducts"
+    caption="String Products"
+    dataType="string"
+    [filterOperations]="filterOperations"
+    [calculateFilterExpression]="calculateSimpleProductsFilterExpression"
+  >
+    <dxo-data-grid-header-filter
+      [dataSource]="headerFilterSimpleProductsDataSource"
+    ></dxo-data-grid-header-filter>
+  </dxi-data-grid-column>
+</dx-data-grid>
