@@ -1,5 +1,15 @@
-import DataGrid, { Column, FilterRow, HeaderFilter, type DataGridTypes } from 'devextreme-react/data-grid';
-import { categories, products, simpleProducts, type Category } from '../data';
+import DataGrid, {
+  Column,
+  FilterRow,
+  HeaderFilter,
+  type DataGridTypes,
+} from 'devextreme-react/data-grid';
+import {
+  categories,
+  products,
+  simpleProducts,
+  type Category,
+} from '../data';
 
 function applyOperation(arg1: string, arg2: string, op: string | null): boolean {
   const normalizedArg1 = arg1.toLowerCase();
@@ -22,8 +32,8 @@ function getFilterExpressionFunction(extractDisplayValues: boolean) {
       const selector = (data: Category) => {
         const values = extractDisplayValues
           ? (this.calculateDisplayValue as (rowData: Category) => string)(data)
-              .toLowerCase()
-              .split(', ')
+            .toLowerCase()
+            .split(', ')
           : (this.calculateCellValue as (rowData: Category) => string[])(data);
         return !!values?.find((v) => applyOperation(v, filterValue, selectedFilterOperation));
       };

@@ -1,4 +1,9 @@
-import DataGrid, { Column, FilterRow, HeaderFilter, type DataGridTypes } from 'devextreme-react/data-grid';
+import DataGrid, {
+  Column,
+  FilterRow,
+  HeaderFilter,
+  type DataGridTypes,
+} from 'devextreme-react/data-grid';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
 
 interface RemoteProduct {
@@ -24,20 +29,20 @@ const dataSource = {
     key: 'CategoryId',
     loadUrl: `${url}GetCategories`,
   }),
-}
+};
 
 const pagingSettings = {
   pageSize: 10,
 };
 
 const headerFilterSettings : DataGridTypes.ColumnHeaderFilter = {
-   dataSource: {
+  dataSource: {
     store: createStore({ loadUrl: `${url}GetProducts` }),
     map: (item: RemoteProduct) => ({
       text: item.ProductName,
       value: item.ProductName,
     }),
-  }
+  },
 };
 
 const filterOperations = ['contains', 'endswith', '=', 'startswith'];
