@@ -1,9 +1,19 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import 'devextreme/dist/css/dx.material.blue.light.compact.css';
+import DxTabPanel, { DxItem } from 'devextreme-vue/tab-panel';
+import DataGridLocal from './components/DataGridLocal.vue';
+import DataGridRemote from './components/DataGridRemote.vue';
 </script>
 
 <template>
   <div class="main">
-    <RouterView/>
+    <DxTabPanel :defer-rendering="false">
+      <DxItem title="Local Data">
+        <DataGridLocal/>
+      </DxItem>
+      <DxItem title="Remote Data">
+        <DataGridRemote/>
+      </DxItem>
+    </DxTabPanel>
   </div>
 </template>
