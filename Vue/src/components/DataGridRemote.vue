@@ -4,9 +4,9 @@ import DxDataGrid, {
   DxFilterRow,
   DxHeaderFilter,
   DxPaging,
-  type DxDataGridTypes,
 } from 'devextreme-vue/data-grid';
 import { createStore } from 'devextreme-aspnet-data-nojquery';
+import type { DataSourceOptions } from 'devextreme-vue/common/data';
 
 interface RemoteProduct {
   ProductID: number;
@@ -33,7 +33,7 @@ const dataSource = {
   }),
 };
 
-const headerFilterDataSource: DxDataGridTypes.ColumnHeaderFilter['dataSource'] = {
+const headerFilterDataSource: DataSourceOptions = {
   store: createStore({ loadUrl: `${url}GetProducts` }),
   map: (item: RemoteProduct) => ({
     text: item.ProductName,
