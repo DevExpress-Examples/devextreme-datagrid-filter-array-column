@@ -1,0 +1,33 @@
+@using ASP_NET_Core.Models
+
+@{
+    var remoteUrl = "https://localhost:5006/api/InMemoryData/";
+    //var remoteUrl = "https://localhost:5006/api/DbData/";
+}
+
+@(Html.DevExtreme().DataGrid<Category>()
+    .ID("data-grid-remote")
+    .ShowBorders(true)
+    .HeaderFilter(headerFilter => headerFilter.Visible(true))
+    .FilterRow(filterRow => filterRow.Visible(true))
+    .Paging(paging => paging.PageSize(10))
+    .RemoteOperations(true)
+    .DataSource(ds => ds.RemoteController()
+        .Key("CategoryId")
+        .LoadUrl(remoteUrl + "GetCategories"))
+    .Columns(columns => {
+        columns.AddFor(m => m.CategoryName)
+            .Width(200)
+            .AllowFiltering(false);
+        columns.Add()
+            .DataField("Products")
+            .FilterOperations(new[] { "contains", "endswith", "=", "startswith" })
+            .CalculateCellValue("calculateRemoteProductNames")
+            .HeaderFilter(headerFilter => headerFilter
+                .DataSource(ds => ds.RemoteController()
+                    .LoadUrl(remoteUrl + "GetProducts"))
+                .DataSourceOptions(dso => dso.Map("mapRemoteProduct"))
+            )
+            .AllowSorting(false);
+    })
+)

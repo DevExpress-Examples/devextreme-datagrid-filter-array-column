@@ -306,5 +306,12 @@ TesterMetadata.xml
 
 */wwwroot/*
 
+!*/wwwroot/css/
+*/wwwroot/css/*
 !*/wwwroot/css/Site.css
+
+!*/wwwroot/js/
+*/wwwroot/js/*
+!*/wwwroot/js/dataGridLocal.js
+!*/wwwroot/js/dataGridRemote.js
 *.DS_Store

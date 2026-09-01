@@ -5,3 +5,6 @@
 body {
     margin: 8px;
 }
+.tab-item-content {
+    padding: 20px;
+}

@@ -1,0 +1,35 @@
+@using ASP_NET_Core.Models
+
+@(Html.DevExtreme().DataGrid<Category>()
+    .ID("data-grid-local")
+    .ShowBorders(true)
+    .HeaderFilter(headerFilter => headerFilter.Visible(true))
+    .FilterRow(filterRow => filterRow.Visible(true))
+    .DataSource(ds => ds.Mvc().Controller("LocalData").LoadAction("GetCategories"))
+    .Columns(columns => {
+        columns.AddFor(m => m.CategoryName)
+            .Width(200)
+            .AllowFiltering(false);
+        columns.Add()
+            .DataField("Products")
+            .Caption("Object Products")
+            .DataType(GridColumnDataType.String)
+            .HeaderFilter(headerFilter => headerFilter
+                .DataSource(ds => ds.Mvc().Controller("LocalData").LoadAction("GetProducts"))
+                .DataSourceOptions(dso => dso.Map("mapProduct"))
+            )
+            .FilterOperations(new[] { "contains", "endswith", "=", "startswith" })
+            .CalculateFilterExpression("calculateFilterExpressionByDisplayValue")
+            .CalculateDisplayValue(new JS("calculateProductNames"));
+        columns.Add()
+            .DataField("SimpleProducts")
+            .Caption("String Products")
+            .DataType(GridColumnDataType.String)
+            .HeaderFilter(headerFilter => headerFilter
+                .DataSource(ds => ds.Mvc().Controller("LocalData").LoadAction("GetSimpleProducts"))
+                .DataSourceOptions(dso => dso.Map("mapSimpleProduct"))
+            )
+            .FilterOperations(new[] { "contains", "endswith", "=", "startswith" })
+            .CalculateFilterExpression("calculateFilterExpressionByCellValue");
+    })
+)
