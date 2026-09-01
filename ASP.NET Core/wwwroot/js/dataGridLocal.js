@@ -7,7 +7,6 @@ function mapSimpleProduct(item) {
 }
 
 function calculateProductNames(rowData) {
-    debugger
     const productNames = rowData.Products.map(productId => {
         const product = products.find((p) => p.Id === productId);
         return product ? product.Name : null;
