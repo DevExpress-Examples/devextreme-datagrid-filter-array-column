@@ -1,10 +1,17 @@
-function calculateRemoteProductNames(rowData) {
-    return rowData.Products.map(product => product.ProductName).join(", ");
-}
+const remoteDataGridApi = function () {
+    function calculateRemoteProductNames(rowData) {
+        return rowData.Products.map(product => product.ProductName).join(", ");
+    }
 
-function mapRemoteProduct(item) {
+    function mapRemoteProduct(item) {
+        return {
+            text: item.ProductName,
+            value: item.ProductName
+        };
+    }
+
     return {
-        text: item.ProductName,
-        value: item.ProductName
+        calculateRemoteProductNames,
+        mapRemoteProduct
     };
-}
+}();

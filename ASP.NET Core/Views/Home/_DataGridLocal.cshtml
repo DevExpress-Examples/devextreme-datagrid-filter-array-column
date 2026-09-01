@@ -1,11 +1,11 @@
-@using ASP_NET_Core.Models
+@using ASP_NET_Core.Models.Local
 
 @(Html.DevExtreme().DataGrid<Category>()
     .ID("data-grid-local")
     .ShowBorders(true)
     .HeaderFilter(headerFilter => headerFilter.Visible(true))
     .FilterRow(filterRow => filterRow.Visible(true))
-    .DataSource(ds => ds.Mvc().Controller("LocalData").LoadAction("GetCategories"))
+    .DataSource(DemoData.Categories)
     .Columns(columns => {
         columns.AddFor(m => m.CategoryName)
             .Width(200)
@@ -15,21 +15,21 @@
             .Caption("Object Products")
             .DataType(GridColumnDataType.String)
             .HeaderFilter(headerFilter => headerFilter
-                .DataSource(ds => ds.Mvc().Controller("LocalData").LoadAction("GetProducts"))
-                .DataSourceOptions(dso => dso.Map("mapProduct"))
+                .DataSource(DemoData.Products)
+                .DataSourceOptions(dso => dso.Map("localDataGridApi.mapProduct"))
             )
             .FilterOperations(new[] { "contains", "endswith", "=", "startswith" })
-            .CalculateFilterExpression("calculateFilterExpressionByDisplayValue")
-            .CalculateDisplayValue(new JS("calculateProductNames"));
+            .CalculateFilterExpression("localDataGridApi.calculateFilterExpressionByDisplayValue")
+            .CalculateDisplayValue(new JS("localDataGridApi.calculateProductNames"));
         columns.Add()
             .DataField("SimpleProducts")
             .Caption("String Products")
             .DataType(GridColumnDataType.String)
             .HeaderFilter(headerFilter => headerFilter
-                .DataSource(ds => ds.Mvc().Controller("LocalData").LoadAction("GetSimpleProducts"))
-                .DataSourceOptions(dso => dso.Map("mapSimpleProduct"))
+                .DataSource(DemoData.SimpleProducts)
+                .DataSourceOptions(dso => dso.Map("localDataGridApi.mapSimpleProduct"))
             )
             .FilterOperations(new[] { "contains", "endswith", "=", "startswith" })
-            .CalculateFilterExpression("calculateFilterExpressionByCellValue");
+            .CalculateFilterExpression("localDataGridApi.calculateFilterExpressionByCellValue");
     })
 )

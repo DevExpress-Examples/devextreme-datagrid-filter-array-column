@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ASP_NET_Core.Models;
+namespace ASP_NET_Core.Models.Local;
 
 public class Category {
     public int CategoryId { get; set; }

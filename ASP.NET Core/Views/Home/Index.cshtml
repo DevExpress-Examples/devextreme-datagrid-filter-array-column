@@ -1,5 +1,7 @@
+@using ASP_NET_Core.Models.Local
+
 <script>
-    const products = @Json.Serialize(DemoData.Products);
+    const localProducts = @Json.Serialize(DemoData.Products);
 </script>
 <script src="~/js/dataGridLocal.js" asp-append-version="true"></script>
 <script src="~/js/dataGridRemote.js" asp-append-version="true"></script>

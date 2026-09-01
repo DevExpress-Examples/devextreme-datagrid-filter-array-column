@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ASP_NET_Core.Models;
+namespace ASP_NET_Core.Models.Local;
 
 public static class DemoData {
     public static List<Category> Categories = [
