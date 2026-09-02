@@ -1,0 +1,35 @@
+@using ASP_NET_Core.Models.Remote
+
+@{
+    string targetController = "InMemoryData";
+    //string targetController = "DbData";
+}
+
+@(Html.DevExtreme().DataGrid<Category>()
+    .ID("data-grid-remote")
+    .ShowBorders(true)
+    .HeaderFilter(headerFilter => headerFilter.Visible(true))
+    .FilterRow(filterRow => filterRow.Visible(true))
+    .Paging(paging => paging.PageSize(10))
+    .RemoteOperations(true)
+    .DataSource(ds => ds.Mvc()
+        .Controller(targetController)
+        .Key("CategoryId")
+        .LoadAction("GetCategories")
+    )
+    .Columns(columns => {
+        columns.AddFor(m => m.CategoryName)
+            .Width(200)
+            .AllowFiltering(false);
+        columns.Add()
+            .DataField("Products")
+            .FilterOperations(new[] { "contains", "endswith", "=", "startswith" })
+            .CalculateCellValue("remoteDataGridApi.calculateRemoteProductNames")
+            .HeaderFilter(headerFilter => headerFilter
+                .DataSource(ds => ds.Mvc().Controller(targetController)
+                    .LoadAction("GetProducts"))
+                .DataSourceOptions(dso => dso.Map("remoteDataGridApi.mapRemoteProduct"))
+            )
+            .AllowSorting(false);
+    })
+)
