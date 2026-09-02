@@ -15,6 +15,7 @@ $(() => {
       allowFiltering: false
     }, {
       dataField: "Products",
+      allowSorting: false,
       filterOperations: ["contains", "endswith", "=", "startswith"],
       calculateCellValue: function(rowData) {
         return rowData.Products.map(product => product.ProductName).join(", ");
