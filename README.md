@@ -46,14 +46,14 @@ function calculateFilterExpression(filterValue, selectedFilterOperation, target)
 
 For remote filtering, the DataGrid processes one column. The example sets [RemoteOperations](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/remoteOperations/) to `true`, and the component displays data from an array of objects. Each of these objects contains a string field.
 
-The example configures remote filtering in an ASP.NET Core server application ([ServerApp](/ServerApp/ServerApp/)). This server uses [DevExtreme.AspNet.Data](https://github.com/DevExpress/DevExtreme.AspNet.Data) and registers a custom compiler function (`RegisterBinaryExpressionCompiler`) that converts client-side filter expressions into server-side queries. Refer to the following file for implementation details: [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs).
+The example configures remote filtering in an ASP.NET Core server application ([ServerApp](/ServerApp/ServerApp/)). This server uses [DevExtreme.AspNet.Data](https://github.com/DevExpress/DevExtreme.AspNet.Data) and calls `RegisterBinaryExpressionCompiler` to extend the library's filter expression processing logic. Refer to the following file for implementation details: [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs).
 
 ### Remote Data Source Types
 
 **ServerApp** includes two data controllers:
 
-1. `InMemoryDataController`: Supplies data from in-memory variables defined in the ASP.NET Core server application.
-2. `DbDataController`: Supplies data from a Microsoft SQL (MSSQL) Northwind database.
+1. `InMemoryDataController`: Supplies data from in-memory variables defined in the ASP.NET Core server application. Use this controller for testing.
+2. `DbDataController`: Supplies data from a Microsoft SQL (MSSQL) Northwind database. Better suited to production environments.
 
 Client applications in this example use `InMemoryDataController` by default.
 
