@@ -6,7 +6,7 @@
 <!-- default badges end -->
 # DevExtreme DataGrid — Filter Collection Columns
 
-This example implements filtering (remote and local) in DataGrid columns where each cell displays a collection of strings.
+This example implements data filtering (remote and local) across DataGrid columns where each cell displays a collection of strings.
 
 ![DevExtreme DataGrid - Filter Collection Columns](images/preview-image.png)
 
@@ -17,7 +17,7 @@ The DataGrid filters two collection columns against local data. Each cell in the
 1. An array of strings.
 1. An array of objects. Each object contains a string field.
 
-Both columns use **columns[]**.[calculateFilterExpression](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/columns/#calculateFilterExpression) to implement custom filtering logic. The example defines a custom comparison function (`selector`) that filters values within each cell's collection:
+Both columns use **columns[]**.[calculateFilterExpression](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/columns/#calculateFilterExpression) to implement custom filtering logic. The example defines a custom comparison function (`selector`) that filters values within each cell collection:
 
 ```js
 function calculateFilterExpression(filterValue, selectedFilterOperation, target) {
@@ -52,10 +52,8 @@ The example configures remote filtering in an ASP.NET Core server application ([
 
 **ServerApp** includes two data controllers:
 
-1. `InMemoryDataController`: Supplies data from in-memory variables defined in the ASP.NET Core server application. Use this controller for testing.
-2. `DbDataController`: Supplies data from a Microsoft SQL (MSSQL) Northwind database. Better suited to production environments.
-
-Client applications in this example use `InMemoryDataController` by default.
+1. `InMemoryDataController` (default): Supplies data from in-memory variables defined in the ASP.NET Core server application. Use this controller for testing.
+2. `DbDataController`: Supplies data from a Microsoft SQL (MSSQL) Northwind database. Better suits production environments.
 
 ## Files to Review
 
