@@ -46,7 +46,7 @@ function calculateFilterExpression(filterValue, selectedFilterOperation, target)
 
 For remote filtering, the DataGrid processes one column. The example sets [RemoteOperations](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/remoteOperations/) to `true`, and the component displays data from an array of objects. Each of these objects contains a string field.
 
-The example configures remote filtering in an ASP.NET Core server application ([ServerApp](/ServerApp/ServerApp/)). This server uses [DevExtreme.AspNet.Data](https://github.com/DevExpress/DevExtreme.AspNet.Data) and calls `RegisterBinaryExpressionCompiler` to extend the library's filter expression processing logic. Refer to the following file for implementation details: [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs).
+The example configures remote filtering in an ASP.NET Core server application ([ServerApp](/ServerApp/ServerApp/)). This server uses [DevExtreme.AspNet.Data](https://github.com/DevExpress/DevExtreme.AspNet.Data) and calls `RegisterBinaryExpressionCompiler` to extend the library filter expression capabilities. Refer to the following file for implementation details: [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs).
 
 ### Remote Data Source Types
 
