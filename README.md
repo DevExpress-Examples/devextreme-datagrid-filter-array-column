@@ -4,28 +4,37 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
-# DevExtreme DataGrid - Filter Collection Column
+# DevExtreme DataGrid — Filter Data in Array-based Columns 
 
-This example demonstrates how to filter DataGrid by a column bound to a collection of objects or strings.
+This example implements data filtering (remote and local) across DataGrid columns whose cells contain arrays of string values.
 
-![Example image](images/preview-image.png)
+![DevExtreme DataGrid — Filter Columns That Display Array Values](images/preview-image.png)
 
-The example implements the following cases:
-1) DataGrid is bound to local data. A data record field contains an array of strings.
-2) DataGrid is bound to local data. A data record field contains an array of objects with string fields.
-3) DataGrid is bound to remote data and [DataGrid.RemoteOperations](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/remoteOperations/) are enabled. The server returns records with an array field including objects with a string field.
+## Local Data Source
 
-The Server App is the ASP.NET Core application and used for the 3rd case. It includes two controllers:
-1) InMemoryDataController. Used for quick testing. Operates with in-memory arrays created in the server app.
-2) DbDataController. Uses Northwind EFCore context bound to local MSSQL Northwind data base. Used to test the real database interaction.
+The DataGrid filters two collection columns against local data. Each cell in these columns displays data from the following sources:
 
-The local data sample utilizes the [Column.CalculateFilterExpression](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/columns/#calculateFilterExpression) callback to implement the custom filtering logic. This callback adds a custom comparison fuction (selector) to the filtering expression and the DataGrid evaluates it for every record:
+1. An array of strings.
+1. An array of objects. Each object contains a string field.
+
+Both columns use **columns[]**.[calculateFilterExpression](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/columns/#calculateFilterExpression) to implement custom filtering logic. The example defines a custom comparison function (`selector`) designed to filter values within each cell collection:
+
 ```js
 function calculateFilterExpression(filterValue, selectedFilterOperation, target) {
     const column = this;
     if (filterValue) {
         const selector = (data) => {
-            ...
+            const applyOperation = (arg1, arg2, op) => {
+                const normalizedArg1 = arg1.toLowerCase();
+                const normalizedArg2 = arg2.toLowerCase();
+                if (op === "=") return normalizedArg1 === normalizedArg2;
+                // ...
+            };
+
+            const values = extractDisplayValues
+                ? column.calculateDisplayValue(data).toLowerCase().split(", ")
+                : column.calculateCellValue(data);
+            return !!values?.find((v) => applyOperation(v, filterValue, selectedFilterOperation));
         };
         return [selector, "=", true];
     }
@@ -33,14 +42,25 @@ function calculateFilterExpression(filterValue, selectedFilterOperation, target)
 }
 ```
 
-The client part in the remote data sample does nothing special but sends a regular filter expression like `["Products", "contains", "Chai"]`. The server app uses the **DevExtreme.AspNet.Data** server-side API: **BinaryExpressionCompiler**. The example uses it to register a custom compiler function that accepts a filter expression and converts it to the required LINQ expression for the server data source. See the [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs) file for implementation details.
+## Remote Data Source
+
+For remote filtering, the DataGrid processes one column. The example sets [RemoteOperations](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/remoteOperations/) to `true`, and the component displays data from an array of objects. Each of these objects contains a string field.
+
+The example configures remote filtering in an ASP.NET Core server application ([ServerApp](/ServerApp/ServerApp/)). This server uses [DevExtreme.AspNet.Data](https://github.com/DevExpress/DevExtreme.AspNet.Data) and calls `RegisterBinaryExpressionCompiler` to extend filter expression capabilities. Refer to the following file for implementation details: [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs).
+
+### Remote Data Source Types
+
+**ServerApp** includes two data controllers:
+
+1. `InMemoryDataController` (default): Supplies data from in-memory variables defined in the ASP.NET Core server application. Use this controller for testing.
+2. `DbDataController`: Supplies data from a Microsoft SQL (MSSQL) Northwind database. Better suited for production environments.
 
 ## Files to Review
 
 - **Server App**
     - [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs)
     - [InMemoryDataController.cs](ServerApp/ServerApp/Controllers/InMemoryDataController.cs)
-    - [DbDataController.cs](ServerApp/ServerApp/Controllers/DbDataController.cs.cs)
+    - [DbDataController.cs](ServerApp/ServerApp/Controllers/DbDataController.cs)
 - **Angular**
     - [data-grid-local.component.html](Angular/src/app/components/data-grid-local/data-grid-local.component.html)
     - [data-grid-remote.component.html](Angular/src/app/components/data-grid-remote/data-grid-remote.component.html)
@@ -49,17 +69,17 @@ The client part in the remote data sample does nothing special but sends a regul
     - [data-grid-remote.tsx](React/src/components/data-grid-remote.tsx)
 - **Vue**
     - [DataGridLocal.vue](Vue/src/components/DataGridLocal.vue)
-    - [DataGridRemote.vue](Vue/src/components/DataGridRemote.vue.vue)
+    - [DataGridRemote.vue](Vue/src/components/DataGridRemote.vue)
 - **jQuery**
     - [DataGridLocal.js](jQuery/src/DataGridLocal.js)
-    - [DataGridRemote.js](jQuery/src/DataGridRemote.js.js)
+    - [DataGridRemote.js](jQuery/src/DataGridRemote.js)
 - **ASP.NET Core**    
-    - [DataGridLocal.cshtml](ASP.NET%20Core/Views/Home/_DataGridLocal.cshtml.cshtml)
+    - [DataGridLocal.cshtml](ASP.NET%20Core/Views/Home/_DataGridLocal.cshtml)
     - [dataGridLocal.js](ASP.NET%20Core/wwwroot/js/dataGridLocal.js)
-    - [DataGridRemote.cshtml](ASP.NET%20Core/Views/Home/_DataGridRemote.cshtml.cshtml)
+    - [DataGridRemote.cshtml](ASP.NET%20Core/Views/Home/_DataGridRemote.cshtml)
     - [dataGridRemote.js](ASP.NET%20Core/wwwroot/js/dataGridRemote.js)
     - [FilterByCollectionPropertyHelper.cs](ASP.NET%20Core/FilterByCollectionPropertyHelper.cs)
-    - [InMemoryDataController.cs](ASP.NET%20Core/Controllers/InMemoryDataController.cs.cs)
+    - [InMemoryDataController.cs](ASP.NET%20Core/Controllers/InMemoryDataController.cs)
     - [DbDataController.cs](ASP.NET%20Core/Controllers/DbDataController.cs)
 
 ## Documentation
