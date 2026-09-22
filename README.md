@@ -4,9 +4,9 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
-# DevExtreme DataGrid — Filter Columns That Contain Array Values 
+# DevExtreme DataGrid — Filter Data in Array-based Columns 
 
-This example implements data filtering (remote and local) across DataGrid columns where each cell displays a collection of strings.
+This example implements data filtering (remote and local) across DataGrid columns whose cells contain arrays of string values.
 
 ![DevExtreme DataGrid — Filter Columns That Display Array Values](images/preview-image.png)
 
@@ -17,7 +17,7 @@ The DataGrid filters two collection columns against local data. Each cell in the
 1. An array of strings.
 1. An array of objects. Each object contains a string field.
 
-Both columns use **columns[]**.[calculateFilterExpression](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/columns/#calculateFilterExpression) to implement custom filtering logic. The example defines a custom comparison function (`selector`) that filters values within each cell collection:
+Both columns use **columns[]**.[calculateFilterExpression](https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxDataGrid/Configuration/columns/#calculateFilterExpression) to implement custom filtering logic. The example defines a custom comparison function (`selector`) designed to filter values within each cell collection:
 
 ```js
 function calculateFilterExpression(filterValue, selectedFilterOperation, target) {
@@ -46,14 +46,14 @@ function calculateFilterExpression(filterValue, selectedFilterOperation, target)
 
 For remote filtering, the DataGrid processes one column. The example sets [RemoteOperations](https://js.devexpress.com/Documentation/ApiReference/UI_Widgets/dxDataGrid/Configuration/remoteOperations/) to `true`, and the component displays data from an array of objects. Each of these objects contains a string field.
 
-The example configures remote filtering in an ASP.NET Core server application ([ServerApp](/ServerApp/ServerApp/)). This server uses [DevExtreme.AspNet.Data](https://github.com/DevExpress/DevExtreme.AspNet.Data) and calls `RegisterBinaryExpressionCompiler` to extend the library filter expression capabilities. Refer to the following file for implementation details: [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs).
+The example configures remote filtering in an ASP.NET Core server application ([ServerApp](/ServerApp/ServerApp/)). This server uses [DevExtreme.AspNet.Data](https://github.com/DevExpress/DevExtreme.AspNet.Data) and calls `RegisterBinaryExpressionCompiler` to extend filter expression capabilities. Refer to the following file for implementation details: [FilterByCollectionPropertyHelper.cs](ServerApp/ServerApp/FilterByCollectionPropertyHelper.cs).
 
 ### Remote Data Source Types
 
 **ServerApp** includes two data controllers:
 
 1. `InMemoryDataController` (default): Supplies data from in-memory variables defined in the ASP.NET Core server application. Use this controller for testing.
-2. `DbDataController`: Supplies data from a Microsoft SQL (MSSQL) Northwind database. Better suits production environments.
+2. `DbDataController`: Supplies data from a Microsoft SQL (MSSQL) Northwind database. Better suited for production environments.
 
 ## Files to Review
 
